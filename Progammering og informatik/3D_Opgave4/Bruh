@@ -1,0 +1,111 @@
+
+//camera skal virke
+let img;  
+function preLoad() {
+ 
+}
+
+let camX = 0;
+let camY = 0;   
+let camZ = 500;
+camSpeed = 5;
+
+boxVinkel = 60; 
+boxX = 0;
+boxY = 0;
+boxZ = 0;
+
+function setup() {
+createCanvas(500,500,WEBGL);
+angleMode(DEGREES);
+//billeder   
+imgP = loadImage('Limes.jpeg');
+imgB = loadImage('blomster.png');
+
+
+//box
+boxX = random(-200, 200);
+boxY = random(-200, 200);
+
+}
+
+function draw () {
+    background(200);
+
+    //Planer
+    function myPlane (w,l,x,y,z,rotX,rotY) {
+        push();
+        translate(x,y,z);
+        rotateX(rotX);
+        rotateY(rotY);
+        plane(w,l);
+        pop();
+    }
+    //nederste 
+    push();
+    texture(imgP);
+    myPlane (500,500,0,250,0,-90,0);
+    pop();
+
+    //øverst
+    push();
+    texture(imgP);
+    myPlane (500,500,0,-250,0,90,0);
+    pop();
+
+    //højre
+    push();
+    texture(imgP);
+    myPlane(500,500,250,0,0,0,270);
+    pop();
+    
+    //venstre
+    push();
+    texture(imgP);
+    myPlane(500,500,-250,0,0,0,90);
+    pop();
+
+    //bagside
+    //myPlane(500,500,0,0,-253,0,0);
+
+        //Camera
+        if (keyIsDown(37)) {
+            camX = camX-camSpeed;
+        } 
+        if (keyIsDown(39)) {
+            camX = camX+camSpeed;
+        }  
+        if (keyIsDown(87)) {
+            camZ = camZ-camSpeed;
+        } 
+        if (keyIsDown(83)) {
+            camZ = camZ+camSpeed;
+        }
+        if (keyIsDown(38)) {
+            camY = camY-camSpeed;
+        } 
+        if (keyIsDown(40)) {
+            camY = camY+camSpeed;
+        }
+
+    camera(camX,camY,camZ+sin(frameCount * 0.01)*10,camX,camY,camZ,0,1,0);
+
+    //Box
+
+push();
+translate(boxX,boxY,boxZ);
+rotateX(boxVinkel);
+rotateY(boxVinkel);
+texture(imgB);
+box(20,20,20);
+boxVinkel = boxVinkel + 1;
+boxZ = boxZ + 25;
+if (boxZ>400) {
+    boxX = random(-200, 200);
+    boxY = random(-200, 200);
+    boxZ=-500;
+  }
+pop();
+
+
+}
